@@ -6,23 +6,13 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-gb</language>
         <copyright>Jacob Burley</copyright>
+        <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
         <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
-        
-        <item>
-            <title>Hello, World!</title>
-            <link>/posts/my-first-post/</link>
-            <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-            
-            <guid>/posts/my-first-post/</guid>
-            <description>This is the first post in my Devlog! I&amp;rsquo;ll be detailing problems I run up against during my BSc thesis, as well as the ways in which I have solved them.</description>
-            <content type="html"><![CDATA[<p>This is the first post in my Devlog! I&rsquo;ll be detailing problems I run up against during my BSc thesis, as well as the ways in which I have solved them.</p>
-]]></content>
-        </item>
         
         <item>
             <title>Running Mongo in Docker</title>
             <link>/posts/running-mongo-in-docker/</link>
-            <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+            <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
             
             <guid>/posts/running-mongo-in-docker/</guid>
             <description>Geting mongo to run in Docker was pretty straight-forward&amp;hellip; for the most part. I started with creating a new directory under the main project to keep my mongo-related stuff in, and added a Dockerfile for the mongo image. The Dockerfile is fairly simple:
@@ -63,6 +53,17 @@ I added both mongo, as well as mongo express, as services within docker-compose.
       <span style="color:#66d9ef">ME_CONFIG_MONGODB_ADMINPASSWORD</span>: rootpassword
 </code></pre></div><p>I&rsquo;ve added some environment variables for mongo for use in the scripts added in the Dockerfile, and set the context for the mongodb build to be the folder with my Dockerfile in it. I&rsquo;m only using mongo express for testing purposes, so I&rsquo;m not really too worried about fleshing it out with its own Dockerfile and folder. Both services will restart on failure, and both have their various configuration settings pre-set.
 I think it&rsquo;s probably going to be worth removing the environment variables from mongo express, because the opendc database isn&rsquo;t viewable by the root user of mongo, so mongo express isn&rsquo;t very helpful in debugging that database at the moment.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Hello, World!</title>
+            <link>/posts/my-first-post/</link>
+            <pubDate>Wed, 01 Apr 2020 00:00:00 +0000</pubDate>
+            
+            <guid>/posts/my-first-post/</guid>
+            <description>This is the first post in my Devlog! I&amp;rsquo;ll be detailing problems I run up against during my BSc thesis, as well as the ways in which I have solved them.</description>
+            <content type="html"><![CDATA[<p>This is the first post in my Devlog! I&rsquo;ll be detailing problems I run up against during my BSc thesis, as well as the ways in which I have solved them.</p>
 ]]></content>
         </item>
         

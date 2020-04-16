@@ -7,6 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Jacob Burley</copyright>
+    <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/untagged/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +15,7 @@
     <item>
       <title>Running Mongo in Docker</title>
       <link>/posts/running-mongo-in-docker/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/posts/running-mongo-in-docker/</guid>
       <description>Geting mongo to run in Docker was pretty straight-forward&amp;hellip; for the most part. I started with creating a new directory under the main project to keep my mongo-related stuff in, and added a Dockerfile for the mongo image. The Dockerfile is fairly simple:
