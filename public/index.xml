@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Jacob Burley</copyright>
-    <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 01 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
@@ -23,12 +23,13 @@ FROMmongo:4.2.5MAINTAINERJacob Burley &amp;lt;j.burley@vu.nl&amp;gt;# Import ini
     </item>
     
     <item>
-      <title>Hello, World!</title>
-      <link>/posts/my-first-post/</link>
+      <title>About</title>
+      <link>/about/</link>
       <pubDate>Wed, 01 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/posts/my-first-post/</guid>
-      <description>This is the first post in my Devlog! I&amp;rsquo;ll be detailing problems I run up against during my BSc thesis, as well as the ways in which I have solved them.</description>
+      <guid>/about/</guid>
+      <description>This is the BSc thesis Devlog! I&amp;rsquo;ll be detailing problems I run up against during my BSc thesis, as well as the ways in which I have solved them.
+I&amp;rsquo;ll be providing a reference architecture for prefabs in Discrete Event Simulators. The DSE I will be building on is OpenDC.</description>
     </item>
     
   </channel>

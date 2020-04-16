@@ -51,7 +51,7 @@ disableHugoGeneratorInject = false
     readOtherPosts = "Read other posts"
 
     [languages.en.params.logo]
-      logoText = "cd ~/bsc.jc0b.computer/public/"
+      logoText = "cat ~/devlog.md"
       logoHomeLink = "/"
     # or
     #
@@ -63,6 +63,10 @@ disableHugoGeneratorInject = false
     identifier = "devlog"
     name       = "Devlog"
     url        = "/posts"
+  [[menu.main]]
+  	identifier = "about"
+  	name 	   = "About"
+  	url        = "/about"
 
 [taxonomies]
   tag      = "tags"

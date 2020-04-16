@@ -56,16 +56,5 @@ I think it&rsquo;s probably going to be worth removing the environment variables
 ]]></content>
         </item>
         
-        <item>
-            <title>Hello, World!</title>
-            <link>/posts/my-first-post/</link>
-            <pubDate>Wed, 01 Apr 2020 00:00:00 +0000</pubDate>
-            
-            <guid>/posts/my-first-post/</guid>
-            <description>This is the first post in my Devlog! I&amp;rsquo;ll be detailing problems I run up against during my BSc thesis, as well as the ways in which I have solved them.</description>
-            <content type="html"><![CDATA[<p>This is the first post in my Devlog! I&rsquo;ll be detailing problems I run up against during my BSc thesis, as well as the ways in which I have solved them.</p>
-]]></content>
-        </item>
-        
     </channel>
 </rss>
