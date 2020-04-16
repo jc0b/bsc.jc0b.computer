@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>untagged on My BSc thesis Devlog</title>
+    <link>/tags/untagged/</link>
+    <description>Recent content in untagged on My BSc thesis Devlog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <copyright>Jacob Burley</copyright>
+    
+	<atom:link href="/tags/untagged/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Running Mongo in Docker</title>
+      <link>/posts/running-mongo-in-docker/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/running-mongo-in-docker/</guid>
+      <description>Geting mongo to run in Docker was pretty straight-forward&amp;hellip; for the most part. I started with creating a new directory under the main project to keep my mongo-related stuff in, and added a Dockerfile for the mongo image. The Dockerfile is fairly simple:
+FROMmongo:4.2.5MAINTAINERJacob Burley &amp;lt;j.burley@vu.nl&amp;gt;# Import init scriptADD mongo-init-opendc-db.sh /docker-entrypoint-initdb.dADD mongo-opendc-schema.sh /docker-entrypoint-initdb.dI&amp;rsquo;ve frozen the version number in order to make sure that the version stays the exact same throughout development, in order to avoid updates breaking functionality and causing a lot of debugging headaches.</description>
+    </item>
+    
+  </channel>
+</rss>

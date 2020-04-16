@@ -1,0 +1,70 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on My BSc thesis Devlog</title>
+        <link>/posts/</link>
+        <description>Recent content in Posts on My BSc thesis Devlog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-gb</language>
+        <copyright>Jacob Burley</copyright>
+        <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Hello, World!</title>
+            <link>/posts/my-first-post/</link>
+            <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+            
+            <guid>/posts/my-first-post/</guid>
+            <description>This is the first post in my Devlog! I&amp;rsquo;ll be detailing problems I run up against during my BSc thesis, as well as the ways in which I have solved them.</description>
+            <content type="html"><![CDATA[<p>This is the first post in my Devlog! I&rsquo;ll be detailing problems I run up against during my BSc thesis, as well as the ways in which I have solved them.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Running Mongo in Docker</title>
+            <link>/posts/running-mongo-in-docker/</link>
+            <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+            
+            <guid>/posts/running-mongo-in-docker/</guid>
+            <description>Geting mongo to run in Docker was pretty straight-forward&amp;hellip; for the most part. I started with creating a new directory under the main project to keep my mongo-related stuff in, and added a Dockerfile for the mongo image. The Dockerfile is fairly simple:
+FROMmongo:4.2.5MAINTAINERJacob Burley &amp;lt;j.burley@vu.nl&amp;gt;# Import init scriptADD mongo-init-opendc-db.sh /docker-entrypoint-initdb.dADD mongo-opendc-schema.sh /docker-entrypoint-initdb.dI&amp;rsquo;ve frozen the version number in order to make sure that the version stays the exact same throughout development, in order to avoid updates breaking functionality and causing a lot of debugging headaches.</description>
+            <content type="html"><![CDATA[<p>Geting mongo to run in Docker was pretty straight-forward&hellip; for the most part. I started with creating a new directory under the main project to keep my mongo-related stuff in, and added a Dockerfile for the mongo image. The Dockerfile is fairly simple:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-docker" data-lang="docker"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> mongo:4.2.5</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">MAINTAINER</span><span style="color:#e6db74"> Jacob Burley &lt;j.burley@vu.nl&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Import init script</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> mongo-init-opendc-db.sh /docker-entrypoint-initdb.d<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> mongo-opendc-schema.sh /docker-entrypoint-initdb.d<span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><p>I&rsquo;ve frozen the version number in order to make sure that the version stays the exact same throughout development, in order to avoid updates breaking functionality and causing a lot of debugging headaches.</p>
+<p>I&rsquo;ve also added two <code>ADD</code> lines, to add scripts to the docker-entrypoint-initdb directory on the docker host at buildtime. Every script in that folder will be run during container startup, so I plan to use them to initialize a new database, <code>opendc</code>, for storing prefab information in, as well as creating the default user and assigning access rights. These scripts currently don&rsquo;t work properly, and I&rsquo;m wondering whether it is because they are not executed in the intended order. I need to figure out what order they are executed in, but worst case I will just condense all initialization tasks into one single script.</p>
+<h2 id="docker-composeyml">docker-compose.yml</h2>
+<p>OpenDC uses docker-compose in order to actually build and run containers, so I need to add mongo to the <code>docker-compose.yml</code> file.
+I added both mongo, as well as mongo express, as services within docker-compose. Mongo express is a web frontend for mongodb, which allows me to view databases and their contents. I added the below to <code>docker-compose.yml</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">mongo</span>:
+    <span style="color:#66d9ef">build</span>:
+        <span style="color:#66d9ef">context</span>: ./mongodb
+    <span style="color:#66d9ef">restart</span>: on-failure
+    <span style="color:#66d9ef">environment</span>:
+      <span style="color:#66d9ef">MONGO_INITDB_ROOT_USERNAME</span>: root
+      <span style="color:#66d9ef">MONGO_INITDB_ROOT_PASSWORD</span>: rootpassword
+      <span style="color:#66d9ef">MONGO_INITDB_DATABASE</span>: admin
+      <span style="color:#66d9ef">OPENDC_DB</span>: opendc
+      <span style="color:#66d9ef">OPENDC_DB_USERNAME</span>: opendc
+      <span style="color:#66d9ef">OPENDC_DB_PASSWORD</span>: opendcpassword
+    <span style="color:#66d9ef">ports</span>:
+      - <span style="color:#ae81ff">27017</span>:<span style="color:#ae81ff">27017</span>
+
+<span style="color:#66d9ef">mongo-express</span>:
+    <span style="color:#66d9ef">image</span>: mongo-express
+    <span style="color:#66d9ef">restart</span>: on-failure
+    <span style="color:#66d9ef">ports</span>:
+      - <span style="color:#ae81ff">8082</span>:<span style="color:#ae81ff">8081</span>
+    <span style="color:#66d9ef">environment</span>:
+      <span style="color:#66d9ef">ME_CONFIG_MONGODB_ADMINUSERNAME</span>: root
+      <span style="color:#66d9ef">ME_CONFIG_MONGODB_ADMINPASSWORD</span>: rootpassword
+</code></pre></div><p>I&rsquo;ve added some environment variables for mongo for use in the scripts added in the Dockerfile, and set the context for the mongodb build to be the folder with my Dockerfile in it. I&rsquo;m only using mongo express for testing purposes, so I&rsquo;m not really too worried about fleshing it out with its own Dockerfile and folder. Both services will restart on failure, and both have their various configuration settings pre-set.
+I think it&rsquo;s probably going to be worth removing the environment variables from mongo express, because the opendc database isn&rsquo;t viewable by the root user of mongo, so mongo express isn&rsquo;t very helpful in debugging that database at the moment.</p>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>
