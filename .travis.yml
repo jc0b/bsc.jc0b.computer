@@ -24,6 +24,6 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -rv --delete -e 'ssh -p 4000' $TRAVIS_BUILD_DIR/public jacobs1q@jc0b.computer:bsc.jc0b.computer/
+  script: rsync -avz --delete -e 'ssh -p 4000' $TRAVIS_BUILD_DIR/public/ jacobs1q@jc0b.computer:bsc.jc0b.computer/
   on:
     branch: master
