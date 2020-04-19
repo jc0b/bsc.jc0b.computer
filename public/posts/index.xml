@@ -6,8 +6,43 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-gb</language>
         <copyright>Jacob Burley</copyright>
-        <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
+        <lastBuildDate>Fri, 17 Apr 2020 00:00:00 +0000</lastBuildDate>
         <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Initialising Mongodb</title>
+            <link>/posts/initialising-mongodb/</link>
+            <pubDate>Fri, 17 Apr 2020 00:00:00 +0000</pubDate>
+            
+            <guid>/posts/initialising-mongodb/</guid>
+            <description>Initialising the databases was a little tricky to begin with - my understanding of Docker and mongo is not spectactular. However, I learned that mongo would run any .sh or .js files in /docker-entrypoint-initdb.d on container startup. This seems to be the recommended way of creating your databases and inserting any initial items you would like to have at the beginning.
+I started with using .js files using some tutorials found in various documentation, but I couldn&amp;rsquo;t seem to get it to work.</description>
+            <content type="html"><![CDATA[<p>Initialising the databases was a little tricky to begin with - my understanding of Docker and mongo is not spectactular. However, I learned that mongo would run any <code>.sh</code> or <code>.js</code> files in <code>/docker-entrypoint-initdb.d</code> on container startup. This seems to be the recommended way of creating your databases and inserting any initial items you would like to have at the beginning.</p>
+<p>I started with using <code>.js</code> files using some tutorials found in various documentation, but I couldn&rsquo;t seem to get it to work. Being more familiar with bash scripting, I decided to switch to using shell files.</p>
+<p>I ended up with two shell files:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>echo <span style="color:#e6db74">&#39;Creating opendc user and db&#39;</span>
+mongo opendc <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>        --host localhost <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>        --port <span style="color:#ae81ff">27017</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>        -u $MONGO_INITDB_ROOT_USERNAME <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>        -p $MONGO_INITDB_ROOT_PASSWORD <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>        --authenticationDatabase admin <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>        --eval <span style="color:#e6db74">&#34;db.createUser({user: &#39;opendc&#39;, pwd: &#39;opendcpassword&#39;, roles:[{role:&#39;dbOwner&#39;, db: &#39;opendc&#39;}]});&#34;</span>
+$MONGO_CMD <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mongo opendc --host localhost --port 27017 -u </span>$MONGO_INITDB_ROOT_USERNAME<span style="color:#e6db74"> -p </span>$MONGO_INITDB_ROOT_PASSWORD<span style="color:#e6db74"> --authenticationDatabase admin&#34;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+echo <span style="color:#e6db74">&#39;Creating opendc db schema...&#39;</span>
+
+$MONGO_CMD <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mongo opendc --host localhost --port 27017 -u </span>$OPENDC_DB_USERNAME<span style="color:#e6db74"> -p </span>$OPENDC_DB_PASSWORD<span style="color:#e6db74"> --authenticationDatabase opendc&#34;</span>
+
+eval $MONGO_COMMAND --eval <span style="color:#e6db74">&#34;db.createCollection(&#39;environments&#39;); db.createCollection(&#39;rooms&#39;); db.createCollection(&#39;datacenters&#39;);&#34;</span>
+</code></pre></div><p>These are a bit messy, but the overall gist is that the first file creates a user on a database called <code>opendc</code>. In mongo, standard practice seems to be not to initialize things before they are needed. As a result, I can create the <code>opendc</code> database by only specifying a user with access to it. Mongo recognises that the database doesn&rsquo;t exist, and creates it at the moment it is needed.
+The second script creates collections within the opendc database. I haven&rsquo;t yet decided what collections I want in it yet, so the three that are there are more or less placeholders, but the premise is the same for as many collections as I want to add.</p>
+<h2 id="next-steps">Next steps:</h2>
+<p>Next, I&rsquo;m looking to put all this functionality in one script. I&rsquo;m still not sure in which order these are executed. I assume that it works in alphabetical order on the filename, but these initialisation files don&rsquo;t need to be seperate anyways.</p>
+]]></content>
+        </item>
         
         <item>
             <title>Running Mongo in Docker</title>
@@ -25,7 +60,7 @@ FROMmongo:4.2.5MAINTAINERJacob Burley &amp;lt;j.burley@vu.nl&amp;gt;# Import ini
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> mongo-init-opendc-db.sh /docker-entrypoint-initdb.d<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> mongo-opendc-schema.sh /docker-entrypoint-initdb.d<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>I&rsquo;ve frozen the version number in order to make sure that the version stays the exact same throughout development, in order to avoid updates breaking functionality and causing a lot of debugging headaches.</p>
-<p>I&rsquo;ve also added two <code>ADD</code> lines, to add scripts to the docker-entrypoint-initdb directory on the docker host at buildtime. Every script in that folder will be run during container startup, so I plan to use them to initialize a new database, <code>opendc</code>, for storing prefab information in, as well as creating the default user and assigning access rights. These scripts currently don&rsquo;t work properly, and I&rsquo;m wondering whether it is because they are not executed in the intended order. I need to figure out what order they are executed in, but worst case I will just condense all initialization tasks into one single script.</p>
+<p>I&rsquo;ve also added two <code>ADD</code> lines, to add scripts to the docker-entrypoint-initdb directory on the docker host at buildtime. Every script in that folder will be run during container startup, so I plan to use them to initialize a new database, <code>opendc</code>, for storing prefab information in, as well as creating the default user and assigning access rights. These scripts currently don&rsquo;t work properly, and I&rsquo;m wondering whether it is because they are not executed in the intended order. I need to figure out what order they are executed in, but worst case I will just condense all initialization tasks into one single script. (You can read more about these scripts <a href="https://bsc.jc0b.computer/posts/initialising-mongodb/">here</a>)</p>
 <h2 id="docker-composeyml">docker-compose.yml</h2>
 <p>OpenDC uses docker-compose in order to actually build and run containers, so I need to add mongo to the <code>docker-compose.yml</code> file.
 I added both mongo, as well as mongo express, as services within docker-compose. Mongo express is a web frontend for mongodb, which allows me to view databases and their contents. I added the below to <code>docker-compose.yml</code>:</p>
