@@ -2,12 +2,13 @@ sudo: required
 dist: bionic
 
 addons:
-  ssh_known_hosts: jc0b.computer
+  ssh_known_hosts: jc0b.computer:4000
 
 before_install:
 - curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | grep "browser_download_url.*64bit.deb" | cut -d '"' -f 4 | wget -qi -
 - rm hugo_extended*.deb
 - sudo dpkg -i hugo_*.deb
+#- echo $DEPLOY_RSA_KEY >> $HOME/.ssh/known_hosts
 
 
 script:
