@@ -1,2 +1,3 @@
 *.DS_Store
 deploy_rsa
+public/*

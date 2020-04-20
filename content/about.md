@@ -40,7 +40,7 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -rv --delete-after -e 'ssh -p $SSH_PORT' $TRAVIS_BUILD_DIR/public $SSH_USER@jc0b.computer:bsc.jc0b.computer/
+  script: rsync -avz --delete -e 'ssh -p $SSH_PORT' $TRAVIS_BUILD_DIR/public/ $SSH_USER@jc0b.computer:bsc.jc0b.computer/
   on:
     branch: master
 ```
