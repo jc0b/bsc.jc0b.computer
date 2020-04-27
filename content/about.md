@@ -10,7 +10,7 @@ I'll be providing a reference architecture for prefabs in Discrete Event Simulat
 
 ## How did you make this site?
 
-The content itself is stored on GitHub. I use [Travis-CI](travis-ci.com), which is free with the [Github Student Developer Pack](https://education.github.com/pack), to compile the static HTML files with [Hugo](https://gohugo.io) and then use [`rsync`](https://en.wikipedia.org/wiki/Rsync) to send them to my webserver.
+The content itself is stored on GitHub. I use [Travis-CI](travis-ci.com), which is free with the [Github Student Developer Pack](https://education.github.com/pack), to compile the static HTML files with [Hugo](https://gohugo.io) and then use [`rsync`](https://en.wikipedia.org/wiki/Rsync) to send the generated files to my webserver.
 
 My `.travis.yml` (the configuration file for Travis) looks a little like this:
 ``` yaml
@@ -46,3 +46,5 @@ deploy:
 ```
 
 The private SSH key is stored in encrypted form on the GitHub repo, and Travis has the encryption key in its environment variables. It then decrypts on every run, and uses it to push the files over to my webserver. In this way, I only have to write and test on my laptop: Travis does the rest.
+
+To encrypt the SSH key, I ran `travis encrypt-file deploy_rsa --add` in the root of my repo. I generated an SSH keypair specifically for this purpose, so I can revoke this key if necessary without having to redeploy the other keys on the server. You'll need to install `travis` on your local machine to run the above command (on my Mac it was as easy as `brew install travis`).

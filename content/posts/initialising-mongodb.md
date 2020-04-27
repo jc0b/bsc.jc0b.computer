@@ -25,16 +25,16 @@ mongo opendc \
         -p $MONGO_INITDB_ROOT_PASSWORD \
         --authenticationDatabase admin \
         --eval "db.createUser({user: 'opendc', pwd: 'opendcpassword', roles:[{role:'dbOwner', db: 'opendc'}]});"
-$MONGO_CMD = "mongo opendc --host localhost --port 27017 -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase admin"
+MONGO_CMD = "mongo opendc --host localhost --port 27017 -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase admin"
 ```
 ``` bash
 #!/bin/bash
 
 echo 'Creating opendc db schema...'
 
-$MONGO_CMD = "mongo opendc --host localhost --port 27017 -u $OPENDC_DB_USERNAME -p $OPENDC_DB_PASSWORD --authenticationDatabase opendc"
+MONGO_CMD = "mongo opendc --host localhost --port 27017 -u $OPENDC_DB_USERNAME -p $OPENDC_DB_PASSWORD --authenticationDatabase opendc"
 
-eval $MONGO_COMMAND --eval "db.createCollection('environments'); db.createCollection('rooms'); db.createCollection('datacenters');"
+eval $MONGO_CMD --eval "db.createCollection('environments'); db.createCollection('rooms'); db.createCollection('datacenters');"
 ```
 
 These are a bit messy, but the overall gist is that the first file creates a user on a database called `opendc`. In mongo, standard practice seems to be not to initialize things before they are needed. As a result, I can create the `opendc` database by only specifying a user with access to it. Mongo recognises that the database doesn't exist, and creates it at the moment it is needed.
