@@ -1,6 +1,7 @@
 baseurl = "/"
 languageCode = "en-gb"
 theme = "hello-friend-ng"
+googleAnalytics = "UA-151894037-2"
 
 archetypeDir = "archetypes"
 contentDir   = "content"
