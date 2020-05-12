@@ -1,7 +1,7 @@
 ---
 title: "Representing Prefabs"
 date: 2020-05-09T21:00:00+02:00
-draft: true
+draft: false
 toc: false
 images:
 tags:
