@@ -83,7 +83,7 @@ My current train of thought is that you (at minimum) should have an environment,
 
 It's also quite difficult to actually represent these ideas in JSON. I think I will endeavour to find another way to represent them during the design phase next week. I think I have an idea of how to actually design this (writing this post has also helped a little), so I should try and get that on paper.
 
-##Docker
+## Docker
 On a somewhat more positive note, working with Docker has been relatively problem-free. Docker on macOS has it's own quirks sometimes, but overall it has been super easy to iterate through designs and debug the issues I've been having. Definitely a much shallower learning curve than MongoDB, but I'm also a lot more familiar with virtualization and containerization. I only wish I could rebuild faster, but I am beginning to suspect that I may be able to only rebuild my containers each time instead of the whole project. 
 
 
