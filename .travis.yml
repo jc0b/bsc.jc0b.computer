@@ -1,10 +1,10 @@
 sudo: required
 dist: bionic
-
+language: generic
 addons:
-  ssh_known_hosts: 
-    - jc0b.computer:4000
-    - 185.87.187.226:4000
+  ssh_known_hosts:
+  - jc0b.computer
+  - 95.179.140.85
 
 before_install:
 - curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | grep "browser_download_url.*64bit.deb" | cut -d '"' -f 4 | wget -qi -
@@ -23,16 +23,16 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -avz --delete -e 'ssh -p 4000' $TRAVIS_BUILD_DIR/public/ jacobs1q@jc0b.computer:bsc.jc0b.computer/
+  script: rsync -avz -O --delete $TRAVIS_BUILD_DIR/public/ deploy@jc0b.computer:/var/www/bsc.jc0b.computer/html/
   on:
     branch: master
 
-#discord channel integration   
-after_success:
-  - wget http://assets.jacobsburley.com/send.sh
-  - chmod +x send.sh
-  - ./send.sh success $WEBHOOK_URL
-after_failure:
-  - wget http://assets.jacobsburley.com/send.sh
-  - chmod +x send.sh
-  - ./send.sh failure $WEBHOOK_URL
+# #discord channel integration   
+# after_success:
+#   - wget http://assets.jacobsburley.com/send.sh
+#   - chmod +x send.sh
+#   - ./send.sh success $WEBHOOK_URL
+# after_failure:
+#   - wget http://assets.jacobsburley.com/send.sh
+#   - chmod +x send.sh
+#   - ./send.sh failure $WEBHOOK_URL

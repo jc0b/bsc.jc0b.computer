@@ -1,6 +1,0 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home/jacobs1q/bsc.jc0b.computer/
-    - /bin/rm -Rf $DEPLOYPATH/{about,assets,categories,images,img,page,posts,resources,tags,index.html,index.xml,sitemap.xml}
-    - /bin/cp -R public/* $DEPLOYPATH
